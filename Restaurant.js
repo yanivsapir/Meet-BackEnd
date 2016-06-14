@@ -9,7 +9,7 @@ var restaurantSchema = new schema({
         types:{},
         category:String
     },
-    reservations:[Number],
+    reservations:{},
     likes:{
         kosher:[Number],
         vegan:[Number],

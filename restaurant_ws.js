@@ -24,3 +24,51 @@ exports.getAllDishes = function(req,res)
         return;
     });
 };
+
+exports.saveReservations = function(req,res){
+  var firstOrder = req.params.firstorders;
+  var firstOrderSum = req.params.firstorderssum;
+  var secondOrder = req.params.secondorder;
+  var secondOrderSum = req.params.secondordersum;
+  var date = req.params.date;
+  var id = req.params.restaurantID;
+
+  var newReservation = {};
+  newReservation[firstOrder] = firstOrderSum;
+  newReservation[secondOrder] = secondOrderSum;
+  newReservation["date"] = date;
+
+  Restaurant.findOne({'id':id}, function(err,foundObject){
+    if(err){
+        console.log(err);
+        res.status(500).send();
+    }
+    else{
+        if(foundObject==null){
+            res.status(404).send(); 
+        }
+        foundObject.reservations = newReservation;
+        foundObject.save(function(err,updateObkect){
+            if(err){
+                console.log(err);
+                res.status(500).send();
+            }
+            else
+                res.send(updateObkect);
+        });
+    };
+  });
+
+  console.log(newReservation);
+  /*newPair.save(function(err,pair) {
+    if(err)
+      res.json("error :", err);
+    else{
+      //updateMeals(reqTitle);
+      //need to go and update all dishes with the new pair
+      console.log("\n Saved pair : " + pair);
+      res.json(pair);
+      return;
+    }  
+  });*/
+}

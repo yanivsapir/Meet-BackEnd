@@ -2,13 +2,10 @@ var express = require('express');
 var app = express(); 
 var url = require('url');
 var port = process.env.PORT || 3000; 
-//var mongoose = require('mongoose');
-//var db = mongoose.connect('mongodb://db_usr:db_pass@ds023593.mlab.com:23593/db_meet');
-//var Restaurant = require('./Restaurant');
+
 var restaurants = require('./restaurant_ws'); 
 var pairs = require('./pair_ws');
 var user = require('./user_ws'); 
-//var Restaurants;
 
 app.set('port',port);
 app.use('/',express.static('./public'));
@@ -27,6 +24,7 @@ app.get('/', function (req, res) {
 
 app.get('/getAllRestaurants',restaurants.getAllRestaurants);
 app.get('/getAllDishes',restaurants.getAllDishes);
+app.post('/saveReservations/:firstorders/:firstorderssum/:secondorder/:secondordersum/:date/:restaurantID',restaurants.saveReservations);
 
 app.get('/getUserByMail/:email',user.getUserByMail);
 app.post('/setUserPair/:email/:title',user.setUserPair);
