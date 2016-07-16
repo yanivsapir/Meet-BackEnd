@@ -47,7 +47,7 @@ exports.saveReservations = function(req,res){
         if(foundObject==null){
             res.status(404).send(); 
         }
-        foundObject.reservations = newReservation;
+        foundObject.reservations.push(newReservation);
         foundObject.save(function(err,updateObkect){
             if(err){
                 console.log(err);
@@ -58,17 +58,20 @@ exports.saveReservations = function(req,res){
         });
     };
   });
+}
 
-  console.log(newReservation);
-  /*newPair.save(function(err,pair) {
-    if(err)
-      res.json("error :", err);
-    else{
-      //updateMeals(reqTitle);
-      //need to go and update all dishes with the new pair
-      console.log("\n Saved pair : " + pair);
-      res.json(pair);
-      return;
-    }  
-  });*/
+exports.saveMeals = function(req,res){
+  Restaurant.findOne({ id: req.body.id },function(err,restaurant){
+        if(err) throw err;
+        restaurant.meals = req.body.meals;
+        restaurant.save(function(err,updateObkect){
+            if(err){
+                console.log(err);
+                res.json({"response":"error"});
+            }
+            else
+                res.json({"response":"success"});
+        });
+        return;
+    });
 }
